@@ -1,3 +1,5 @@
+import speech_recognition as sr
+
 from wit import Wit
 from utils import get_last_message_info
 from constants import ACCESS_TOKEN
@@ -18,6 +20,22 @@ def get_text_message():
     return resp
 
 
+def get_audio_message():
+    r = sr.Recognizer()
+    with sr.Microphone(device_index=0) as source:
+        r.adjust_for_ambient_noise(source)
+        print("Speak now")
+        audio = r.listen(source)
+
+    with open('output.wav', 'wb') as f:
+        f.write(audio.get_wav_data())
+
+    with open('output.wav', 'rb') as f:
+        resp = client.speech(f, {'Content-Type': 'audio/wav'})
+
+    return resp
+
+
 def main():
     option = print_menu()
 
@@ -25,8 +43,9 @@ def main():
         resp = get_text_message()
 
     else:
-        return -1
+        resp = get_audio_message()
 
+    print(resp)
     info = get_last_message_info(resp)
     print(info)
     run_action(info)
@@ -34,3 +53,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

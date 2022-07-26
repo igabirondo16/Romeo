@@ -1,2 +1,4 @@
 wit
 psutil
+SpeechRecognition
+pyaudio
