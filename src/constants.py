@@ -1,5 +1,6 @@
 ACCESS_TOKEN = '35HX42EZ3SGC7WPDQLV7QFTXGXNV5W4N'
 GOOGLE_URL = 'https://google.com/search?q='
+WIKIPEDIA_URL = 'https://en.wikipedia.org/wiki/'
 
 PROGRAM_CODES = {
     'browser':0,

@@ -1,5 +1,5 @@
 import subprocess
-from constants import GOOGLE_URL, PROGRAM_PATHS, PROGRAM_CODES, PROGRAM_NAMES
+from constants import GOOGLE_URL, WIKIPEDIA_URL, PROGRAM_PATHS, PROGRAM_CODES, PROGRAM_NAMES
 import psutil
 import os, signal
 
@@ -33,9 +33,15 @@ def run_program(program_code):
     proc = subprocess.Popen(program_path)
     print("Started program with pid: " + str(proc.pid))
 
-def run_browser_with_args(args=""):
+def google_search(args):
     program_path = PROGRAM_PATHS[0]
     url = GOOGLE_URL + args
+    args_list = [program_path, url]
+    proc = subprocess.Popen(args_list)
+
+def wikipedia_search(args):
+    program_path = PROGRAM_PATHS[0]
+    url = WIKIPEDIA_URL + args
     args_list = [program_path, url]
     proc = subprocess.Popen(args_list)
 
@@ -66,7 +72,11 @@ def run_action(info):
 
     elif intent == 'run_browser_with_args':
         query = get_query(info['entities'])
-        run_browser_with_args(query)
+        google_search(query)
+
+    elif intent == 'wikipedia_search':
+        query = get_query(info['entities'])
+        wikipedia_search(query)
     
     else:
         return -1
