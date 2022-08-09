@@ -1,5 +1,5 @@
 import subprocess
-from constants import PROGRAM_PATHS, PROGRAM_CODES, PROGRAM_NAMES
+from constants import GOOGLE_URL, PROGRAM_PATHS, PROGRAM_CODES, PROGRAM_NAMES
 import psutil
 import os, signal
 
@@ -33,20 +33,40 @@ def run_program(program_code):
     proc = subprocess.Popen(program_path)
     print("Started program with pid: " + str(proc.pid))
 
-def get_program_code(entity):
-    program_code = PROGRAM_CODES[entity]
+def run_browser_with_args(args=""):
+    program_path = PROGRAM_PATHS[0]
+    url = GOOGLE_URL + args
+    args_list = [program_path, url]
+    proc = subprocess.Popen(args_list)
+
+def get_program_code(entities):
+    if not 'program' in entities.keys():
+        return ''
+
+    program_code = PROGRAM_CODES[entities['program']]
     return program_code
 
+def get_query(entities):
+    if not 'query' in entities.keys():
+        return ''
+        
+    query = entities['query']
+    return query
 
 def run_action(info):
     intent = info['intent']
-    program_code = get_program_code(info['entity'])
 
     if intent == 'run_program':
+        program_code = get_program_code(info['entities'])
         run_program(program_code)
 
     elif intent =='close_program':
+        program_code = get_program_code(info['entities'])
         stop_program(program_code)
+
+    elif intent == 'run_browser_with_args':
+        query = get_query(info['entities'])
+        run_browser_with_args(query)
     
     else:
         return -1

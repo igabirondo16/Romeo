@@ -1,4 +1,7 @@
 
+from html import entities
+
+
 def get_last_message_text(resp):
     text = resp['text']
     return text
@@ -7,17 +10,32 @@ def get_last_message_intent(resp):
     intent = resp['intents'][0]['name']
     return intent
 
-def get_last_message_entity(resp):
-    entity = resp['entities']['program:program'][0]['value']
-    return entity
+def get_last_message_entities(resp):
+    entity_list = resp['entities']
+
+    entities = {}
+    key_dict = ''
+    value_dict= ''
+    for key in entity_list:
+        if key == 'program:program':
+            key_dict = 'program'
+
+        else:
+            key_dict = 'query'
+
+        value_dict = entity_list[key][0]['value']
+        entities[key_dict] = value_dict
+
+
+    return entities
 
 def get_last_message_info(resp):
     text = get_last_message_text(resp)
     intent = get_last_message_intent(resp)
-    entity = get_last_message_entity(resp)
+    entities = get_last_message_entities(resp)
 
     info = {}
     info['text'] = text
     info['intent'] = intent
-    info['entity'] = entity
+    info['entities'] = entities
     return info
