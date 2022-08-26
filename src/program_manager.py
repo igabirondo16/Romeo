@@ -1,5 +1,5 @@
 import subprocess
-from constants import GOOGLE_URL, WIKIPEDIA_URL, PROGRAM_PATHS, PROGRAM_CODES, PROGRAM_NAMES
+from constants import GOOGLE_URL, WIKIPEDIA_URL, PROGRAM_PATHS, PROGRAM_CODES_EUS, PROGRAM_NAMES
 import psutil
 import os, signal
 
@@ -45,11 +45,20 @@ def wikipedia_search(args):
     args_list = [program_path, url]
     proc = subprocess.Popen(args_list)
 
+def weather_search(args):
+    program_path = PROGRAM_PATHS[0]
+    url = GOOGLE_URL + "weather+" + args
+    print(url)
+    args_list = [program_path, url]
+    print("iep")
+    proc = subprocess.Popen(args_list)
+
 def get_program_code(entities):
     if not 'program' in entities.keys():
         return ''
 
-    program_code = PROGRAM_CODES[entities['program']]
+    program_name = entities['program'].lower()
+    program_code = PROGRAM_CODES_EUS[program_name]
     return program_code
 
 def get_query(entities):
@@ -77,6 +86,10 @@ def run_action(info):
     elif intent == 'wikipedia_search':
         query = get_query(info['entities'])
         wikipedia_search(query)
+
+    elif intent == 'weather_search':
+        query = get_query(info['entities'])
+        weather_search(query)
     
     else:
         return -1

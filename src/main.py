@@ -2,10 +2,10 @@ import speech_recognition as sr
 
 from wit import Wit
 from utils import get_last_message_info
-from constants import ACCESS_TOKEN
+from constants import ACCESS_TOKEN_EN, ACCESS_TOKEN_ES, ACCESS_TOKEN_EUS
 from program_manager import run_action
 
-client = Wit(ACCESS_TOKEN)
+client = Wit(ACCESS_TOKEN_EUS)
 
 def print_menu():
     print("Choose type of message input:")
