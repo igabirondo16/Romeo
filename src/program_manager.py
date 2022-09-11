@@ -1,5 +1,5 @@
 import subprocess
-from constants import GOOGLE_URL, WIKIPEDIA_URL, PROGRAM_PATHS, PROGRAM_CODES_EUS, PROGRAM_NAMES
+from constants import GOOGLE_URL, WIKIPEDIA_URL, PROGRAM_PATHS, PROGRAM_CODES_EN, PROGRAM_NAMES
 import psutil
 import os, signal
 
@@ -58,7 +58,7 @@ def get_program_code(entities):
         return ''
 
     program_name = entities['program'].lower()
-    program_code = PROGRAM_CODES_EUS[program_name]
+    program_code = PROGRAM_CODES_EN[program_name]
     return program_code
 
 def get_query(entities):

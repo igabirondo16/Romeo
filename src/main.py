@@ -1,11 +1,12 @@
+from tabnanny import verbose
 import speech_recognition as sr
 
 from wit import Wit
 from utils import get_last_message_info
-from constants import ACCESS_TOKEN_EN, ACCESS_TOKEN_ES, ACCESS_TOKEN_EUS
+from constants import ACCESS_TOKEN_EN
 from program_manager import run_action
 
-client = Wit(ACCESS_TOKEN_EUS)
+client = Wit(ACCESS_TOKEN_EN)
 
 def print_menu():
     print("Choose type of message input:")
@@ -22,16 +23,18 @@ def get_text_message():
 
 def get_audio_message():
     r = sr.Recognizer()
-    with sr.Microphone(device_index=0) as source:
+    
+    with sr.Microphone() as source:
         r.adjust_for_ambient_noise(source)
         print("Speak now")
-        audio = r.listen(source)
+        audio = r.record(source, duration=5, offset=0)
+        print("Stop speaking")
 
     with open('output.wav', 'wb') as f:
-        f.write(audio.get_wav_data())
-
+        f.write(audio.get_wav_data(convert_rate=16000, convert_width=2))
+    
     with open('output.wav', 'rb') as f:
-        resp = client.speech(f, {'Content-Type': 'audio/wav'})
+        resp = client.speech(f, {'Content-Type': 'audio/wav'}, verbose=True)
 
     return resp
 
