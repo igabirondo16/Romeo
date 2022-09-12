@@ -7,7 +7,7 @@ Romeo is a command executor for English. It can execute either voice or written 
 Juliet can be installed from GitHub:
 
 ```bash
-git clone 
+git clone https://github.com/igabirondo16/Romeo.git
 ```
 Install neccesary dependencies for this project:
 
